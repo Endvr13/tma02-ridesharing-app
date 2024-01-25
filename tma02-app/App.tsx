@@ -35,14 +35,9 @@ import LoginScreen from './screens/LoginScreen';
 import OwnerScreen from './screens/OwnerScreen';
 import CustomerScreen from './screens/CustomerScreen';
 
-
-// State variables to hold the data entered by the user.
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
-  
   // The UI for the application.
   return (
     <NavigationContainer>
