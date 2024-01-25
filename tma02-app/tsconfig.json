@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "jsx": "react-native",
+    "declaration": true,
+    "declarationMap": true,
+    "importHelpers": false,
+    "downlevelIteration": false,
+    "strict": true,
+    "moduleResolution": "node",
+    "types": [
+      "jest",
+      "react-native",
+      "nativewind/types"
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "typedocOptions": {
+    "entryPoints": [
+      "App.tsx",
+      "libraries/*",
+      "components/*"
+    ],
+    "out": "docs"
+  },
+  "paths": {"*": ["node_modules/@types/*", "node_modules/*"]},
+  "extends": "expo/tsconfig.base"
+}
