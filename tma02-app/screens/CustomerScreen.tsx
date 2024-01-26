@@ -1,13 +1,42 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, Button } from 'react-native';
 import { getLocationAddress } from '../libraries/NominatimService';
 import * as Taxi from '../libraries/TaxiService';
 import * as Location from 'expo-location';
 import TimePicker from '../components/TimePicker';
 import AddressPicker from '../components/AddressPicker';
-import WaitTime from '../components/WaitTime';
+import { RouteProp } from '@react-navigation/native';
 
-export default function CustomerScreen({ route }) {
+/**
+ * Represents the parameter list for the root stack in the navigation.
+ */
+type RootStackParamList = {
+  Customer: {userid: string};
+};
+
+/**
+ * Represents the props for the CustomerScreen component.
+ */
+type CustomerScreenProps = {
+  route: RouteProp<RootStackParamList, 'Customer'>;
+}
+
+/**
+ * Requests user permission to get the GPS location of the device.
+ * This needs to be called before the GPS is read.
+ * 
+ * @returns true if permission is granted, otherwise throws an error.
+ */
+async function getUserPermission(): Promise<boolean> {
+  let { status } = await Location.requestForegroundPermissionsAsync();
+  if (status !== 'granted') {
+    throw('Permission to access location was denied, please check your device settings.');
+  } else {
+    return true;
+  }
+}
+
+export default function CustomerScreen({ route}: CustomerScreenProps) {
 
     const [customerAddress, setCustomerAddress] = useState("");
     const [customerHours, setCustomerHours] = useState("0");
@@ -16,8 +45,12 @@ export default function CustomerScreen({ route }) {
     const [customerPickupid, setCustomerPickupid] = useState("0");
     const [userid,setUserid] = useState("");
     
-    useLayoutEffect(() => {
-      console.log("Route params:" , route.params);
+    /**
+     * useEffect hook that logs the route parameters and updates the userid state if it exists in the route params.
+     * @param route - The route object containing the parameters.
+     */
+    useEffect(() => {
+      console.log("Route params:", route.params);
       if (route.params && route.params.userid) {
         setUserid(route.params.userid);
         console.log("UserID updated:", route.params.userid);

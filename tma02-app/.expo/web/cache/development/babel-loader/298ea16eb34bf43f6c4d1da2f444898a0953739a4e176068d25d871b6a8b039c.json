@@ -1,1 +1,0 @@
-{"ast":null,"code":"export { default } from './uuid';","map":{"version":3,"names":["default"],"sources":["D:\\OU\\TM352\\tma02\\tma02-app\\node_modules\\expo-modules-core\\src\\uuid\\index.ts"],"sourcesContent":["export { default } from './uuid';\n"],"mappings":"AAAA,SAASA,OAAO,QAAQ,QAAQ"},"metadata":{},"sourceType":"module","externalDependencies":[]}

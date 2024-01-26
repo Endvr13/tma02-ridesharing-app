@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, SafeAreaView, Button } from 'react-native';
 import { getLocationAddress } from '../libraries/NominatimService';
 import * as Taxi from '../libraries/TaxiService';
@@ -6,6 +6,19 @@ import * as Location from 'expo-location';
 import TimePicker from '../components/TimePicker';
 import AddressPicker from '../components/AddressPicker';
 import WaitTime from '../components/WaitTime';
+
+
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  Owner: {userid: string};
+};
+
+type OwnerScreenProps = {
+  route: RouteProp<RootStackParamList, 'Owner'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Owner'>;
+};
 
 /**
  * Requests user permission to get the GPS location of the device.
@@ -22,7 +35,7 @@ async function getUserPermission(): Promise<boolean> {
     }
   }
 
-export default function OwnerScreen({ route }) {
+export default function OwnerScreen({ route }: OwnerScreenProps) {
   
     const [ownerAddress, setOwnerAddress] = useState("");
     const [ownerHours, setOwnerHours] = useState("0");
@@ -66,7 +79,7 @@ export default function OwnerScreen({ route }) {
       setOwnerMatches(JSON.stringify(matches));
     }  
   
-    useLayoutEffect(() => {
+    useEffect(() => {
       console.log("Route params:" , route.params);
       if (route.params && route.params.userid) {
         setUserid(route.params.userid);

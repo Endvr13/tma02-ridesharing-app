@@ -21,21 +21,31 @@
  * components to provide a simple UI.
  **/
 
-import { Text, TextInput, Button, SafeAreaView, View, StyleSheet, Pressable } from 'react-native';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import TimePicker from './components/TimePicker';
-import AddressPicker from './components/AddressPicker';
-import WaitTime from './components/WaitTime';
-import { getLocationAddress } from './libraries/NominatimService';
-import * as Taxi from './libraries/TaxiService';
-import * as Location from 'expo-location';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator} from '@react-navigation/native-stack'
 import LoginScreen from './screens/LoginScreen';
 import OwnerScreen from './screens/OwnerScreen';
 import CustomerScreen from './screens/CustomerScreen';
 
-const Stack = createNativeStackNavigator();
+import { NativeWindStyleSheet } from "nativewind";
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+/**
+ * Defines the types for the RootStackParamList.
+ * - `Login`: Represents the screen for user login.
+ * - `Owner`: Represents the screen for the owner with the specified `userid`.
+ * - `Customer`: Represents the screen for the customer with the specified `userid`.
+ */
+type RootStackParamList = {
+  Login: undefined;
+  Owner: {userid: string};
+  Customer: {userid: string}; 
+};
 
 export default function App() {
   // The UI for the application.
