@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
-
-
+import React, { useContext, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Input, Button, Layout, TopNavigation, Divider, Text, Icon, TopNavigationAction } from '@ui-kitten/components';
+import { ThemeContext } from '../components/theme-context';
+
 
 /**
  * Represents the parameter list for the root stack navigation.
@@ -20,19 +20,28 @@ type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
 };
 
+const themeContext = useContext(ThemeContext);
+
+const themeIcon = (props: any) => (
+  <Icon {...props} name={themeContext.theme === 'light' ? 'moon-outline' : 'sun-outline'}/>
+);
 /**
  * Renders a login screen component.
  * @param navigation - The navigation object from React Navigation.
  * @returns The rendered login screen component.
- */
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+ */  
+
+
+
+export const LoginScreen = ({ navigation }: LoginScreenProps) => {
+
   const [userid, setUserid] = useState("");
 
   /**
    * Handles the login for a customer.
    * Navigates to the 'Customer' screen with the provided user ID.
    */
-  const handleCustomerLogin = () => {
+  const navigateCustomerLogin = () => {
     navigation.navigate('Customer', { userid: userid });
   };
 
@@ -40,34 +49,28 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
    * Handles the login for an owner.
    * Navigates to the 'Owner' screen with the provided user ID.
    */
-  const handleOwnerLogin = () => {
+  const navigateOwnerLogin = () => {
     navigation.navigate('Owner', { userid: userid });
   };
 
+  const toggleDarkMode = () => (
+    <TopNavigationAction icon={themeIcon} onPress={themeContext.toggleTheme}/>
+  );
+
   return (
-    <View className='bg-gray-100'>
-      <Text>
-        Login
-      </Text>
-      <View className='justify-center items-center py-5'>
-        <TextInput className='bg-white w-1/2 text-center rounded-md' value={userid} onChangeText={setUserid} />
-      </View>
-      <View className='flex-row mx-5 justify-center'>
-        <Pressable
-          className='bg-blue-200 px-2 rounded-md'
-          onPress={() => {
-            handleCustomerLogin();
-          }}>
-          <Text className='text-xl'>Customer Login</Text>
-        </Pressable>
-        <Pressable
-          className='ml-2 bg-blue-200 px-2 rounded-md'
-          onPress={() => {
-            handleOwnerLogin();
-          }}>
-          <Text className='text-xl'>Owner Login</Text>
-        </Pressable>
-      </View>
-    </View>
+    <Layout style={{flex: 1}}>
+      <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Login</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryRight={toggleDarkMode}/>
+        <Layout level='2' style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', padding: 16 }}>
+          <Input placeholder='Enter User ID'  onChangeText={setUserid} style={{ margin: 5}}/>
+          <Layout level='1' style={{ flexDirection: 'row', gap: 5, alignItems: 'flex-start', padding: 16, borderRadius: 5 }}>
+            <Button
+              onPress={navigateCustomerLogin} style={{minWidth:75}}>Customer Login</Button>
+            <Button 
+              onPress={navigateOwnerLogin} style={{minWidth:75}}>Owner Login</Button>
+          </Layout>
+        </Layout>
+        
+    </Layout>
+
   );
 }

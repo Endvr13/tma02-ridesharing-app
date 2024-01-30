@@ -7,7 +7,8 @@
  * 3/10/23 CThomson Intial version
  */
 
-import { View, Button, StyleSheet, TextInput, GestureResponderEvent } from 'react-native';
+import { Input, Layout, Button } from '@ui-kitten/components';
+import { GestureResponderEvent } from 'react-native';
 
 type AddressPickerProps = {
   label: string;
@@ -19,27 +20,9 @@ type AddressPickerProps = {
 export default function AddressPicker(props: AddressPickerProps) {
 
   return (
-    <View style={styles.container}>
-      <TextInput style={styles.input} placeholder={props.label} accessibilityLabel={props.label} value={props.address} onChangeText={props.onChangeAddress}/>
-      <Button 
-        title='Set current location' 
-        onPress={props.onClick}
-        /> 
-    </View>
+    <Layout>
+      <Input placeholder={props.label} accessibilityLabel={props.label} value={props.address} onChangeText={props.onChangeAddress}/>
+      <Button onPress={props.onClick} style={{marginVertical:5}}>Set current location</Button> 
+    </Layout>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    paddingHorizontal: 24,
-  },
-  input: {
-    height: 40,
-    margin: 5,
-    borderWidth: 1,
-    padding: 5,
-  }
-});

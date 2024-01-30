@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, Button } from 'react-native';
 import { getLocationAddress } from '../libraries/NominatimService';
 import * as Taxi from '../libraries/TaxiService';
 import * as Location from 'expo-location';
 import TimePicker from '../components/TimePicker';
 import AddressPicker from '../components/AddressPicker';
 import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Text, Button, Icon, TopNavigation, TopNavigationAction, Layout } from '@ui-kitten/components';
 
 /**
  * Represents the parameter list for the root stack in the navigation.
@@ -19,6 +20,7 @@ type RootStackParamList = {
  */
 type CustomerScreenProps = {
   route: RouteProp<RootStackParamList, 'Customer'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Customer'>;
 }
 
 /**
@@ -36,7 +38,11 @@ async function getUserPermission(): Promise<boolean> {
   }
 }
 
-export default function CustomerScreen({ route}: CustomerScreenProps) {
+const BackIcon = (props: any) => (
+  <Icon {...props} name='arrow-back'/>
+);
+
+export const CustomerScreen = ({navigation, route}: CustomerScreenProps) => {
 
     const [customerAddress, setCustomerAddress] = useState("");
     const [customerHours, setCustomerHours] = useState("0");
@@ -44,7 +50,15 @@ export default function CustomerScreen({ route}: CustomerScreenProps) {
     const [customerMatches, setCustomerMatches] = useState("");
     const [customerPickupid, setCustomerPickupid] = useState("0");
     const [userid,setUserid] = useState("");
-    
+
+    const navigateBack = () => {
+        navigation.goBack();
+    };
+
+    const BackAction = () => (
+      <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
+    );
+
     /**
      * useEffect hook that logs the route parameters and updates the userid state if it exists in the route params.
      * @param route - The route object containing the parameters.
@@ -80,21 +94,21 @@ export default function CustomerScreen({ route}: CustomerScreenProps) {
     }
   
     return (
-      <SafeAreaView>
-          <Text>
-            Customer Request
-          </Text>
-          <Text>UserID: {userid}</Text>
-          <AddressPicker label='Pickup address' address={customerAddress} onClick={getCustomerData} onChangeAddress={setCustomerAddress} />
-          <TimePicker label='Pickup time (24hrs)' hours={customerHours} minutes={customerMinutes} onChangeHours={setCustomerHours} onChangeMinutes={setCustomerMinutes}/>
-          <View>
-            <Button title="Make" onPress={customerMake}/>
-            <Button title="Cancel" onPress={customerCancel} />
-            <Button title="Matches" />
-          </View>
-          <Text>
-              Matches: {customerMatches}
-          </Text>
-      </SafeAreaView>
+      <Layout style={{ flex: 1}}>
+          <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white'}}>Owner</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryLeft={BackAction}/>
+          <Layout level='1' style={{alignItems: 'center' }}>
+            <Text>UserID: {userid}</Text>
+            <AddressPicker label='Pickup address' address={customerAddress} onClick={getCustomerData} onChangeAddress={setCustomerAddress} />
+            <TimePicker label='Pickup time (24hrs)' hours={customerHours} minutes={customerMinutes} onChangeHours={setCustomerHours} onChangeMinutes={setCustomerMinutes}/>
+            <Layout style={{flexDirection: 'row', gap: 5, marginVertical:5}}>
+              <Button onPress={customerMake}>Make</Button>
+              <Button onPress={customerCancel}>Cancel</Button>
+            </Layout>
+            <Button>Matches</Button>
+            <Text>
+                Matches: {customerMatches}
+            </Text>
+          </Layout>
+      </Layout>
     )
   }

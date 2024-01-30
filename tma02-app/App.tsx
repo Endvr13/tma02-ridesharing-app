@@ -21,41 +21,33 @@
  * components to provide a simple UI.
  **/
 
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator} from '@react-navigation/native-stack'
-import LoginScreen from './screens/LoginScreen';
-import OwnerScreen from './screens/OwnerScreen';
-import CustomerScreen from './screens/CustomerScreen';
+import * as eva from '@eva-design/eva';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
-import { NativeWindStyleSheet } from "nativewind";
+import { ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import { AppNavigator } from './components/navigation.component';
+import { useState } from 'react';
+import { ThemeContext } from './components/theme-context';
 
-NativeWindStyleSheet.setOutput({
-  default: "native",
-});
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-/**
- * Defines the types for the RootStackParamList.
- * - `Login`: Represents the screen for user login.
- * - `Owner`: Represents the screen for the owner with the specified `userid`.
- * - `Customer`: Represents the screen for the customer with the specified `userid`.
- */
-type RootStackParamList = {
-  Login: undefined;
-  Owner: {userid: string};
-  Customer: {userid: string}; 
-};
 
 export default function App() {
   // The UI for the application.
+
+  const [theme, setTheme] = useState('dark');
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name='Owner' component={OwnerScreen} />
-        <Stack.Screen name='Customer' component={CustomerScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <IconRegistry icons={EvaIconsPack}/>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}> 
+        <ApplicationProvider theme={eva[theme as keyof typeof eva]} mapping={eva.mapping as any}>
+            <AppNavigator/>
+        </ApplicationProvider>
+      </ThemeContext.Provider>
+    </>
   );
 }

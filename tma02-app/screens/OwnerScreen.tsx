@@ -10,6 +10,7 @@ import WaitTime from '../components/WaitTime';
 
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 
 type RootStackParamList = {
   Owner: {userid: string};
@@ -35,7 +36,13 @@ async function getUserPermission(): Promise<boolean> {
     }
   }
 
-export default function OwnerScreen({ route }: OwnerScreenProps) {
+
+const BackIcon = (props: any) => (
+  <Icon {...props} name='arrow-back'/>
+);
+
+
+export const OwnerScreen: React.FC<OwnerScreenProps> = ({ navigation, route }: OwnerScreenProps) => {
   
     const [ownerAddress, setOwnerAddress] = useState("");
     const [ownerHours, setOwnerHours] = useState("0");
@@ -45,6 +52,13 @@ export default function OwnerScreen({ route }: OwnerScreenProps) {
     const [ownerOrderid,setOwnerOrderid] = useState("");
     const [userid,setUserid] = useState("");
 
+    const navigateBack = () => {
+      navigation.goBack();
+    };
+
+    const BackAction = () => (
+      <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
+    );
 
     
       //Make sure we can get the GPS location when required.
@@ -89,10 +103,7 @@ export default function OwnerScreen({ route }: OwnerScreenProps) {
   
     return (
       <SafeAreaView>
-  
-        <Text className='text-center text-xl font-bold'>
-          Owner Offer
-        </Text>
+        <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white'}}>Owner</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryLeft={BackAction}/>
         <Text>UserID: {userid}</Text>
         <AddressPicker label='Waiting address' address={ownerAddress} onClick={getOwnerData} onChangeAddress={setOwnerAddress} />
         <TimePicker label='Start to wait at (24hrs)' hours={ownerHours} minutes={ownerMinutes} onChangeHours={setOwnerHours} onChangeMinutes={setOwnerMinutes}/>

@@ -12,7 +12,7 @@
 // To find the USERID, click on Open in new Tab at the top of the screen and then look at the URL 
 // in the new browser tab. You will see that it contains the text /user/USERID/. Use that number 
 // in the configuration file and you are ready to go.
-const apibase = "http://10.0.2.2:3000/openstack/taxi/";
+const apibase = "http://localhost:3000/openstack/taxi/";
 
 /**
  * Retrieves matches from the service

@@ -8,6 +8,7 @@
  */
 
 import { Text, View, StyleSheet, TextInput } from 'react-native';
+import { Input, Layout } from '@ui-kitten/components';
 
 type TimePickerProps = {
   label: string;
@@ -19,34 +20,23 @@ type TimePickerProps = {
 
 export default function TimePicker(props: TimePickerProps) {
   return (
-    <View style={styles.container}>
+    <View style={{}}>
       <Text>{props.label}</Text>
-      <TextInput style={styles.input} 
-                 placeholder='hh' 
-                 value={props.hours} 
-                 onChangeText={props.onChangeHours} 
-                 inputMode='numeric'/>
-      <Text>:</Text>
-      <TextInput style={styles.input} 
-                 placeholder='mm' 
-                 value={props.minutes} 
-                 onChangeText={props.onChangeMinutes} 
-                 inputMode='numeric'/> 
+      <Layout style={{flexDirection:'row'}}>
+        <Input style={{}} 
+                  placeholder='hh' 
+                  value={props.hours} 
+                  onChangeText={props.onChangeHours} 
+                  inputMode='numeric'/>
+        <Text style={{fontSize: 24}}>:</Text>
+        <Input style={{}} 
+                  placeholder='mm' 
+                  value={props.minutes} 
+                  onChangeText={props.onChangeMinutes} 
+                  inputMode='numeric'/> 
+
+      </Layout>
+
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  input: {
-    height: 40,
-    margin: 5,
-    borderWidth: 1,
-    padding: 5,
-    width: 40,
-  },
-});
