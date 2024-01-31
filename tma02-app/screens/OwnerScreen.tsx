@@ -7,9 +7,13 @@ import AddressPicker from '../components/AddressPicker';
 import WaitTime from '../components/WaitTime';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+<<<<<<< Updated upstream
 import TopNavigationBar from '../components/TopNavigationBar';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import MatchMaker from '../components/MatchMaker';
+=======
+import { Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+>>>>>>> Stashed changes
 
 type RootStackParamList = {
   Owner: {userid: string};
@@ -35,7 +39,17 @@ async function getUserPermission(): Promise<boolean> {
     }
   }
 
+<<<<<<< Updated upstream
 export const OwnerScreen = ({ route }: OwnerScreenProps) => {
+=======
+
+const BackIcon = (props: any) => (
+  <Icon {...props} name='arrow-back'/>
+);
+
+
+export const OwnerScreen = ({ navigation, route }: OwnerScreenProps) => {
+>>>>>>> Stashed changes
   
     const [ownerAddress, setOwnerAddress] = useState("");
     const [ownerHours, setOwnerHours] = useState("0");
@@ -44,6 +58,17 @@ export const OwnerScreen = ({ route }: OwnerScreenProps) => {
     const [ownerOrderid,setOwnerOrderid] = useState("0");
     const [userid,setUserid] = useState("");
 
+<<<<<<< Updated upstream
+=======
+    const navigateBack = () => {
+      navigation.goBack();
+    };
+
+    const BackAction = () => (
+      <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
+    );
+
+>>>>>>> Stashed changes
     
       //Make sure we can get the GPS location when required.
     getUserPermission();
@@ -79,6 +104,7 @@ export const OwnerScreen = ({ route }: OwnerScreenProps) => {
     }, [route]);
   
     return (
+<<<<<<< Updated upstream
       <Layout style={{flex:1}}>
           <TopNavigationBar title={() => <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Owner: {userid}</Text>} showBackButton={true}/>      
           <Layout level='1' style={{flex:1, justifyContent: 'flex-start', marginHorizontal:16 }}>
@@ -97,6 +123,23 @@ export const OwnerScreen = ({ route }: OwnerScreenProps) => {
             </Layout>
           </Layout>
       </Layout>
+=======
+      <SafeAreaView>
+        <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white'}}>Owner</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryLeft={BackAction}/>
+        <Text>UserID: {userid}</Text>
+        <AddressPicker label='Waiting address' address={ownerAddress} onClick={getOwnerData} onChangeAddress={setOwnerAddress} />
+        <TimePicker label='Start to wait at (24hrs)' hours={ownerHours} minutes={ownerMinutes} onChangeHours={setOwnerHours} onChangeMinutes={setOwnerMinutes}/>
+        <WaitTime label='Wait time (minutes)' minutes={ownerWait} onChangeMinutes={setOwnerWait} />
+        <View>
+          <Button title="Make" onPress={transportOwnerMake} />
+          <Button title="Cancel" onPress={transportOwnerCancel} />
+          <Button title="Matches" onPress={transportOwnerMatches} />
+        </View>
+        <Text>
+            Matches: {ownerMatches}
+        </Text>
+      </SafeAreaView>
+>>>>>>> Stashed changes
   
     )
   
