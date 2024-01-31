@@ -7,12 +7,7 @@
  * 3/10/23 CThomson Intial version
  */
 
-<<<<<<< Updated upstream
-import { Divider, Input, Layout, Text } from '@ui-kitten/components';
-=======
-import { Text, View, StyleSheet, TextInput } from 'react-native';
-import { Input, Layout } from '@ui-kitten/components';
->>>>>>> Stashed changes
+import {Input, Layout, Text } from '@ui-kitten/components';
 
 type TimePickerProps = {
   label: string;
@@ -24,7 +19,6 @@ type TimePickerProps = {
 
 export default function TimePicker(props: TimePickerProps) {
   return (
-<<<<<<< Updated upstream
       <Layout style={{justifyContent:'center', alignItems:'center', padding:3 }}>
         <Text style={{fontSize:24, paddingBottom:5}}>{props.label}</Text>
         <Layout style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
@@ -41,25 +35,5 @@ export default function TimePicker(props: TimePickerProps) {
                     maxLength={2}/> 
         </Layout>
       </Layout>
-=======
-    <View style={{}}>
-      <Text>{props.label}</Text>
-      <Layout style={{flexDirection:'row'}}>
-        <Input style={{}} 
-                  placeholder='hh' 
-                  value={props.hours} 
-                  onChangeText={props.onChangeHours} 
-                  inputMode='numeric'/>
-        <Text style={{fontSize: 24}}>:</Text>
-        <Input style={{}} 
-                  placeholder='mm' 
-                  value={props.minutes} 
-                  onChangeText={props.onChangeMinutes} 
-                  inputMode='numeric'/> 
-
-      </Layout>
-
-    </View>
->>>>>>> Stashed changes
   );
 }

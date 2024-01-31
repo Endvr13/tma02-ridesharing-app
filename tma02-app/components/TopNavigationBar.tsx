@@ -1,6 +1,6 @@
 import { Icon, TopNavigation, TopNavigationAction } from "@ui-kitten/components";
 import { useTheme } from "./theme-context";
-import { FunctionComponentElement, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 const ToggleThemeButton = () => {
