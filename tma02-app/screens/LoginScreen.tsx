@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Input, Button, Layout, TopNavigation, Divider, Text, Icon, TopNavigationAction } from '@ui-kitten/components';
-import { ThemeContext } from '../components/theme-context';
-
+import { Input, Button, Layout,Text, } from '@ui-kitten/components';
+import  TopNavigationBar  from '../components/TopNavigationBar';
 
 /**
  * Represents the parameter list for the root stack navigation.
@@ -20,23 +19,18 @@ type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
 };
 
-const themeContext = useContext(ThemeContext);
-
-const themeIcon = (props: any) => (
-  <Icon {...props} name={themeContext.theme === 'light' ? 'moon-outline' : 'sun-outline'}/>
-);
-/**
- * Renders a login screen component.
- * @param navigation - The navigation object from React Navigation.
- * @returns The rendered login screen component.
- */  
-
-
-
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
   const [userid, setUserid] = useState("");
 
+  useEffect(() => {
+    const resetUserid = navigation.addListener('focus', () => {
+      // Reset userid when the LoginScreen is in focus
+      setUserid("");
+    });
+
+    return resetUserid;
+  }, [navigation]);
   /**
    * Handles the login for a customer.
    * Navigates to the 'Customer' screen with the provided user ID.
@@ -53,16 +47,13 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
     navigation.navigate('Owner', { userid: userid });
   };
 
-  const toggleDarkMode = () => (
-    <TopNavigationAction icon={themeIcon} onPress={themeContext.toggleTheme}/>
-  );
 
   return (
     <Layout style={{flex: 1}}>
-      <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Login</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryRight={toggleDarkMode}/>
+      <TopNavigationBar title={() => <Text  style={{ fontSize: 24, fontWeight: 'bold'}}>Login</Text>} showBackButton={false}/>
         <Layout level='2' style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', padding: 16 }}>
-          <Input placeholder='Enter User ID'  onChangeText={setUserid} style={{ margin: 5}}/>
-          <Layout level='1' style={{ flexDirection: 'row', gap: 5, alignItems: 'flex-start', padding: 16, borderRadius: 5 }}>
+          <Input placeholder='Enter User ID' value={userid} onChangeText={setUserid} style={{ margin: 5}}/>
+          <Layout level='1' style={{ flexDirection: 'row', gap: 5, alignItems: 'center', padding: 16, borderRadius: 5 }}>
             <Button
               onPress={navigateCustomerLogin} style={{minWidth:75}}>Customer Login</Button>
             <Button 

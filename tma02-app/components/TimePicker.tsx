@@ -7,8 +7,7 @@
  * 3/10/23 CThomson Intial version
  */
 
-import { Text, View, StyleSheet, TextInput } from 'react-native';
-import { Input, Layout } from '@ui-kitten/components';
+import { Divider, Input, Layout, Text } from '@ui-kitten/components';
 
 type TimePickerProps = {
   label: string;
@@ -20,23 +19,21 @@ type TimePickerProps = {
 
 export default function TimePicker(props: TimePickerProps) {
   return (
-    <View style={{}}>
-      <Text>{props.label}</Text>
-      <Layout style={{flexDirection:'row'}}>
-        <Input style={{}} 
-                  placeholder='hh' 
-                  value={props.hours} 
-                  onChangeText={props.onChangeHours} 
-                  inputMode='numeric'/>
-        <Text style={{fontSize: 24}}>:</Text>
-        <Input style={{}} 
-                  placeholder='mm' 
-                  value={props.minutes} 
-                  onChangeText={props.onChangeMinutes} 
-                  inputMode='numeric'/> 
-
+      <Layout style={{justifyContent:'center', alignItems:'center', padding:3 }}>
+        <Text style={{fontSize:24, paddingBottom:5}}>{props.label}</Text>
+        <Layout style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+          <Input style={{width:'12%'}} 
+                    placeholder='hh' 
+                    onChangeText={props.onChangeHours} 
+                    inputMode='numeric'
+                    maxLength={2}/>
+          <Text style={{fontSize: 24, paddingHorizontal:2}}>:</Text>
+          <Input style={{width:'12%'}} 
+                    placeholder='mm' 
+                    onChangeText={props.onChangeMinutes} 
+                    inputMode='numeric'
+                    maxLength={2}/> 
+        </Layout>
       </Layout>
-
-    </View>
   );
 }

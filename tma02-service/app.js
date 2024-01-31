@@ -259,7 +259,7 @@ function getImp(userid, id) {
 function postImp(userid, type, address, start, end) {
     console.log("Request to POST orders: " + userid + ", " + type + ", " + address + ", " + start + ", " + end);
     let response = "";
-    if (orderCount >= 10) {
+    if (orderCount >= 50) {
         response = "{\"status\" : \"error\",\"message\" : \"404 - Out of memory\"}";
         console.log("Response from POST orders: " + response);
         return response;
@@ -357,7 +357,7 @@ function matchesImp(userid) {
                 ) {
                     if (matches !== "")
                         matches += ",";
-                    matches += "{ \"start\": \"" + order.start.toISOString() + "\", \"hire_userid\": \"" + order2.userid + "\", \"hire_address\": \"" +
+                    matches += "{ \"offer_start\": \"" + order.start.toISOString() + "\", \"offer_end\":\"" + order.end.toISOString() + "\", \"hire_start\":\"" + order2.start.toISOString() + "\", \"hire_userid\": \"" + order2.userid + "\", \"hire_address\": \"" +
                         order2.address + "\", \"offer_userid\": \"" + order.userid + "\", \"offer_address\": \"" + order.address + "\"}";
                 }
             });

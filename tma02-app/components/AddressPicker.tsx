@@ -19,9 +19,10 @@ type AddressPickerProps = {
 
 export default function AddressPicker(props: AddressPickerProps) {
 
+
   return (
-    <Layout>
-      <Input placeholder={props.label} accessibilityLabel={props.label} value={props.address} onChangeText={props.onChangeAddress}/>
+    <Layout style={{padding:3}}>
+      <Input multiline={true} placeholder={props.label} accessibilityLabel={props.label} value={props.address} onChangeText={props.onChangeAddress}/>
       <Button onPress={props.onClick} style={{marginVertical:5}}>Set current location</Button> 
     </Layout>
   );

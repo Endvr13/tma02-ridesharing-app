@@ -21,13 +21,34 @@ const apibase = "http://localhost:3000/openstack/taxi/";
  * @return a list of matches
  */
 export async function getMatches(userid:string):Promise<any> {
-  const response = await fetch(apibase+"matches/?userid="+userid);
-  if (!response.ok) {
-    const message = "An error has occured: "+response.status;
-    throw(message);
+
+  try {
+    const response = await fetch(apibase+"matches/?userid="+userid);
+    if (!response.ok) {
+
+      const message = "An error has occured: "+response.status;
+      throw(message);
+    }
+
+    const json = await response.json();
+    return checkResponse(json); 
+
+  } catch (error : any) {
+    if (typeof error === 'string') {
+      if (error.includes("No matching") ) {
+        console.log(error);
+      } else {
+        console.log(error);
+        alert("An error has occured. Please try again later.");
+      }
+
+    } else {
+      console.error(error.message);
+      alert("An error has occured. Please try again later.");
+    }
   }
-  const json = await response.json();
-  return checkResponse(json); 
+
+
 }
 
 /**
@@ -46,21 +67,29 @@ export async function postOrders(userid:string, start:string, end:string, type:s
       "type": type,
       "address": address
   };
+  try {
+    const response = await fetch(apibase + "orders", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(details)
+    });
 
-  const response = await fetch(apibase+"orders", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(details) 
-  });
+    if (!response.ok) {
+      const message = "An error has occurred" + response.status;
+      throw new Error(message);
+    }
 
-  if (!response.ok) {
-    const message = "An error has occured"+ response.status;
-    throw(message);
+    const json = await response.json();
+    return checkResponse(json)[0]; 
+
+  } catch (error : any) {
+    console.error(error.message);
+    alert("An error has occurred. Please try again later.");
   }
-  const json = await response.json();
-  return checkResponse(json)[0]; 
+
+
 }
 
 /**
@@ -71,16 +100,38 @@ export async function postOrders(userid:string, start:string, end:string, type:s
  * @return a status
  */
 export async function deleteOrders(userid:string,orderid:string):Promise<any> {
-  const response = await fetch(apibase+"orders/"+orderid+"?userid="+userid, {
-    method: 'DELETE'
-  });
 
-  if (!response.ok) {
-    const message = "An error has occured"+ response.status;
-    throw(message);
+
+  try {
+    
+    const response = await fetch(apibase+"orders/"+orderid+"?userid="+userid, {
+      method: 'DELETE'
+    });
+    
+    if (!response.ok) {
+      const message = "An error has occured"+ response.status;
+      throw new Error(message);
+    }
+
+    const json = await response.json();
+    return checkResponse(json); 
+
+  } catch (error : any) {
+    if (typeof error === 'string') {
+      if (error.includes("No matching") ) {
+        console.log(error);
+        alert("No order to delete!");
+      } else {
+        console.log(error);
+        alert("An error has occured. Please try again later.");
+      }
+
+    } else {
+      console.error(error.message);
+      alert("An error has occured. Please try again later.");
+    }
   }
-  const json = await response.json();
-  return checkResponse(json); 
+
 }
 
 /**

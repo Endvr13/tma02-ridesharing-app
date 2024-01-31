@@ -1,16 +1,15 @@
 import React, { useState, useEffect} from 'react';
-import { View, Text, SafeAreaView, Button } from 'react-native';
 import { getLocationAddress } from '../libraries/NominatimService';
 import * as Taxi from '../libraries/TaxiService';
 import * as Location from 'expo-location';
 import TimePicker from '../components/TimePicker';
 import AddressPicker from '../components/AddressPicker';
 import WaitTime from '../components/WaitTime';
-
-
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import TopNavigationBar from '../components/TopNavigationBar';
+import { Button, Divider, Layout, Text } from '@ui-kitten/components';
+import MatchMaker from '../components/MatchMaker';
 
 type RootStackParamList = {
   Owner: {userid: string};
@@ -36,29 +35,14 @@ async function getUserPermission(): Promise<boolean> {
     }
   }
 
-
-const BackIcon = (props: any) => (
-  <Icon {...props} name='arrow-back'/>
-);
-
-
-export const OwnerScreen: React.FC<OwnerScreenProps> = ({ navigation, route }: OwnerScreenProps) => {
+export const OwnerScreen = ({ route }: OwnerScreenProps) => {
   
     const [ownerAddress, setOwnerAddress] = useState("");
     const [ownerHours, setOwnerHours] = useState("0");
     const [ownerMinutes, setOwnerMinutes] = useState("0");
-    const [ownerMatches, setOwnerMatches] = useState("");
     const [ownerWait, setOwnerWait] = useState("0");
-    const [ownerOrderid,setOwnerOrderid] = useState("");
+    const [ownerOrderid,setOwnerOrderid] = useState("0");
     const [userid,setUserid] = useState("");
-
-    const navigateBack = () => {
-      navigation.goBack();
-    };
-
-    const BackAction = () => (
-      <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
-    );
 
     
       //Make sure we can get the GPS location when required.
@@ -87,36 +71,32 @@ export const OwnerScreen: React.FC<OwnerScreenProps> = ({ navigation, route }: O
         Taxi.deleteOrders(userid, ownerOrderid);
       setOwnerOrderid("");
     }
-    
-    const transportOwnerMatches = async () => {
-      const matches = await Taxi.getMatches(userid);
-      setOwnerMatches(JSON.stringify(matches));
-    }  
   
     useEffect(() => {
-      console.log("Route params:" , route.params);
       if (route.params && route.params.userid) {
         setUserid(route.params.userid);
-        console.log("UserID updated:", route.params.userid);
       }
     }, [route]);
   
     return (
-      <SafeAreaView>
-        <TopNavigation title={() => <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white'}}>Owner</Text>} style={{backgroundColor:'rgb(21, 26, 48)'}} alignment='center' accessoryLeft={BackAction}/>
-        <Text>UserID: {userid}</Text>
-        <AddressPicker label='Waiting address' address={ownerAddress} onClick={getOwnerData} onChangeAddress={setOwnerAddress} />
-        <TimePicker label='Start to wait at (24hrs)' hours={ownerHours} minutes={ownerMinutes} onChangeHours={setOwnerHours} onChangeMinutes={setOwnerMinutes}/>
-        <WaitTime label='Wait time (minutes)' minutes={ownerWait} onChangeMinutes={setOwnerWait} />
-        <View>
-          <Button title="Make" onPress={transportOwnerMake} />
-          <Button title="Cancel" onPress={transportOwnerCancel} />
-          <Button title="Matches" onPress={transportOwnerMatches} />
-        </View>
-        <Text>
-            Matches: {ownerMatches}
-        </Text>
-      </SafeAreaView>
+      <Layout style={{flex:1}}>
+          <TopNavigationBar title={() => <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Owner: {userid}</Text>} showBackButton={true}/>      
+          <Layout level='1' style={{flex:1, justifyContent: 'flex-start', marginHorizontal:16 }}>
+            <Layout style={{justifyContent:'center', paddingTop:20}}>
+              <AddressPicker label='Pickup address' address={ownerAddress} onClick={getOwnerData} onChangeAddress={setOwnerAddress} />
+              <Divider/>
+              <TimePicker label='Start time (24hrs)' hours={ownerHours} onChangeHours={setOwnerHours} minutes={ownerMinutes} onChangeMinutes={setOwnerMinutes}></TimePicker>
+              <WaitTime label="Wait time" minutes={ownerWait} onChangeMinutes={setOwnerWait}></WaitTime>
+              <Layout style={{flexDirection: 'row', gap: 5, marginVertical:5, justifyContent:'center'}}>
+                <Button onPress={transportOwnerMake} style={{flex:1}}>Make</Button>
+                <Button onPress={transportOwnerCancel} style={{flex:1}}>Cancel</Button>
+              </Layout>   
+              <Layout style={{}}>
+                <MatchMaker userid={userid} userType='owner'/>
+              </Layout>
+            </Layout>
+          </Layout>
+      </Layout>
   
     )
   

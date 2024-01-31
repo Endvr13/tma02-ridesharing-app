@@ -6,7 +6,7 @@
  * 3/10/23 CThomson Intial version
  */
 
-import { Text, View, StyleSheet, TextInput } from 'react-native';
+import { Divider, Input, Layout, Text } from '@ui-kitten/components';
 
 type WaitTimeProps = {
   label: string;
@@ -16,28 +16,17 @@ type WaitTimeProps = {
 
 export default function WaitTime(props: WaitTimeProps) {
   return (
-    <View style={styles.container}>
-      <Text>{props.label}</Text>
-      <TextInput style={styles.input} 
-                 placeholder='mm' 
-                 value={props.minutes} 
-                 onChangeText={props.onChangeMinutes}
-                 inputMode='numeric'/> 
-    </View>
+    <Layout style={{flexDirection:'column', justifyContent:'center', alignItems:'center', padding:3 }}>
+      <Text style={{fontSize:24, paddingBottom:5}}>{props.label}</Text>
+      <Divider/>
+      <Layout style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+        <Input style={{width:'30%'}} 
+                  placeholder='mins' 
+                  onChangeText={props.onChangeMinutes} 
+                  inputMode='numeric'
+                  maxLength={3}
+                  textStyle={{textAlign: 'left'}}/>
+      </Layout>
+    </Layout>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  input: {
-    height: 40,
-    margin: 5,
-    borderWidth: 1,
-    padding: 5,
-    width: 40,
-  },
-});
